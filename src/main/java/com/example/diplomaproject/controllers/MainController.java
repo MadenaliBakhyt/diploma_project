@@ -21,6 +21,16 @@ public class MainController {
         return "Secured data";
     }
 
+    @GetMapping("/doctor")
+    public String doctorData(){
+        return "Doctor data";
+    }
+
+    @GetMapping("/pharmacy")
+    public String pharmacyData(){
+        return "Pharmacy data";
+    }
+
     @GetMapping("/admin")
     public String adminData(){
         return "Admin data";

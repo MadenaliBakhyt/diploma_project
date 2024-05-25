@@ -5,9 +5,7 @@ import com.example.diplomaproject.entities.UserEntity;
 import com.example.diplomaproject.entities.enums.Roles;
 import com.example.diplomaproject.repositories.UserRepository;
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,7 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.awt.*;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -66,7 +64,8 @@ public class UserService implements UserDetailsService {
     public UserEntity createNewUser(RegistrationUserDto registrationUserDto){
         UserEntity userEntity=new UserEntity();
         userEntity.setUsername(registrationUserDto.getUsername());
-        userEntity.setEmail(registrationUserDto.getEmail());
+        userEntity.setIin(registrationUserDto.getIin());
+        userEntity.setPhone_number(registrationUserDto.getPhone_number());
         userEntity.setPassword(passwordEncoder.encode(registrationUserDto.getPassword()));
         //Nado proverku sdelat typa susestvuetly takoy akkaunt yly net
         userEntity.setRoles(List.of(roleService.getRole(Roles.ROLE_USER)));

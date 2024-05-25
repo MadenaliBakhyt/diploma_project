@@ -21,9 +21,12 @@ public class UserEntity {
 
     @Column(name = "password")
     private String password;
+    @Column(name = "iin")
+    private String iin;
 
-    @Column(name = "email")
-    private String email;
+    @Column(name = "phone_number")
+    private String phone_number;
+
 
     @ManyToMany
     @JoinTable(

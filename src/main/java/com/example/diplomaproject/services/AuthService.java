@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -27,17 +29,17 @@ public class AuthService{
     private final JwtTokenUtils jwtTokenUtils;
     private final AuthenticationManager authenticationManager;
 
-    public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest authRequest){
-        try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
-        }catch (BadCredentialsException e){
-            return new ResponseEntity<>(new AppError(HttpStatus.UNAUTHORIZED.value(),"Incorrect login or password"),HttpStatus.UNAUTHORIZED);
+        public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest authRequest){
+            try {
+                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
+            }catch (BadCredentialsException e){
+                return new ResponseEntity<>(new AppError(HttpStatus.UNAUTHORIZED.value(),"Incorrect login or password"),HttpStatus.UNAUTHORIZED);
+            }
+            UserDetails userDetails=userService.loadUserByUsername(authRequest.getUsername());
+            String token=jwtTokenUtils.generateToken(userDetails);
+            Optional<UserEntity> userEntity=userService.findByUsername(userDetails.getUsername());
+            return ResponseEntity.ok(new JwtResponse(userEntity.get().getId(), userEntity.get().getUsername(), userEntity.get().getIin(), userEntity.get().getPhone_number(), token));
         }
-        UserDetails userDetails=userService.loadUserByUsername(authRequest.getUsername());
-        String token=jwtTokenUtils.generateToken(userDetails);
-        return ResponseEntity.ok(new JwtResponse(token));
-
-    }
 
     public ResponseEntity<?> createNewUser(@RequestBody RegistrationUserDto registrationUserDto){
         if(!registrationUserDto.getPassword().equals(registrationUserDto.getConfirmPassword())){
@@ -46,9 +48,8 @@ public class AuthService{
         if(userService.findByUsername(registrationUserDto.getUsername()).isPresent()){
             return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(),"User is already exist"),HttpStatus.BAD_REQUEST);
         }
-        UserEntity userEntity=userService.createNewUser(registrationUserDto);
-        return ResponseEntity.ok(new UserDto(userEntity.getId(),userEntity.getUsername(),userEntity.getEmail()));
-
+        userService.createNewUser(registrationUserDto);
+        return createAuthToken(new JwtRequest(registrationUserDto.getUsername(), registrationUserDto.getPassword()));
     }
 
 
