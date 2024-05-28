@@ -3,6 +3,7 @@ package com.example.diplomaproject.services;
 
 import com.example.diplomaproject.dto.PrescriptionDto;
 import com.example.diplomaproject.dto.PrescriptionRequest;
+import com.example.diplomaproject.dto.TagRespondDto;
 import com.example.diplomaproject.entities.PrescriptionEntity;
 import com.example.diplomaproject.entities.TagEntity;
 import com.example.diplomaproject.repositories.PrescriptionRepository;
@@ -41,8 +42,9 @@ public class PrescriptionService {
         return new PrescriptionDto(prescriptionEntity);
     }
 
-    public List<TagEntity> findAllTagsById(Integer id){
-        return prescriptionRepository.findById(id).get().getTags();
+    public List<TagRespondDto> findAllTagsById(Integer id){
+        return prescriptionRepository.findById(id).get().getTags()
+                .stream().map(TagRespondDto::new).toList();
     }
 
     public List<PrescriptionDto> findAllPresByDoctorId(){

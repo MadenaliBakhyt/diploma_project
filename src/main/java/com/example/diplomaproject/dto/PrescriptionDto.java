@@ -27,7 +27,7 @@ public class PrescriptionDto {
     private Date createdDate;
 
     private Date expiredDate;
-    private List<TagEntity> tags;
+    private List<TagRespondDto> tags;
 
     public PrescriptionDto(PrescriptionEntity prescriptionEntity) {
         this.id = prescriptionEntity.getId();
@@ -36,6 +36,6 @@ public class PrescriptionDto {
         this.status = prescriptionEntity.getStatus();
         this.createdDate = prescriptionEntity.getCreatedDate();
         this.expiredDate = prescriptionEntity.getExpiredDate();
-        this.tags=prescriptionEntity.getTags();
+        this.tags=prescriptionEntity.getTags().stream().map(TagRespondDto::new).toList();
     }
 }
