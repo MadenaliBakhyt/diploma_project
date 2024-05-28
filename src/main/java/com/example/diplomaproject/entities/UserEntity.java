@@ -3,11 +3,14 @@ package com.example.diplomaproject.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Collection;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name="users")
 public class UserEntity {
 

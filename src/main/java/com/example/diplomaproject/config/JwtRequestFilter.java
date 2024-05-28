@@ -3,7 +3,6 @@ package com.example.diplomaproject.config;
 import com.example.diplomaproject.utils.JwtTokenUtils;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.SignatureException;
-import jakarta.persistence.Column;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,30 +26,32 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String authHeader=request.getHeader("Authorization");
-        String username=null;
+        String authHeader = request.getHeader("Authorization");
+        String username = null;
+        Long id=null;
         String jwt = null;
 
-        if(authHeader!=null&&authHeader.startsWith("Bearer ")){
-            jwt=authHeader.substring(7);
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            jwt = authHeader.substring(7);
             try {
-                username=jwtTokenUtils.getUsername(jwt);
-            }catch (ExpiredJwtException e){
+                username = jwtTokenUtils.getUsername(jwt);
+                id= jwtTokenUtils.getUserId(jwt);
+            } catch (ExpiredJwtException e) {
                 log.debug("Expired token time");
-            }catch (SignatureException e){
+            } catch (SignatureException e) {
                 log.debug("Signature is incorrect");
             }
 
         }
 
-        if(username!=null&& SecurityContextHolder.getContext().getAuthentication()==null){
-            UsernamePasswordAuthenticationToken token=new UsernamePasswordAuthenticationToken(
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                     username,
                     null,
                     jwtTokenUtils.getRoles(jwt).stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList())
             );
             SecurityContextHolder.getContext().setAuthentication(token);
         }
-        filterChain.doFilter(request,response);
+        filterChain.doFilter(request, response);
     }
 }
