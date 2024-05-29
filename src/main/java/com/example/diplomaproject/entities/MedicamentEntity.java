@@ -32,7 +32,7 @@ public class MedicamentEntity {
     @Column(name = "price")
     private Long price;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(
             name="med_tags",
             joinColumns = @JoinColumn(name = "med_id"),
