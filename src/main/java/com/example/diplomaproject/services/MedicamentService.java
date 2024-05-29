@@ -11,6 +11,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -47,6 +48,14 @@ public class MedicamentService {
     public List<MedicamentRespondDto> getAllByTagId(Integer id){
         List<MedicamentEntity> medicamentEntityList=tagRepository.findById(id).get().getMedicamentEntityList();
         return medicamentEntityList.stream().map(MedicamentRespondDto::new).toList();
+    }
+
+    public Long getTotalPrice(List<MedicamentEntity> list){
+        Long ans= 0L;
+        for (MedicamentEntity medicamentEntity : list) {
+            ans += medicamentEntity.getPrice();
+        }
+        return ans;
     }
 
     @Transactional

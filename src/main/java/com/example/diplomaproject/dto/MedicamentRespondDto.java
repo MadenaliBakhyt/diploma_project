@@ -19,7 +19,7 @@ public class MedicamentRespondDto {
     private String description;
     private String country;
     private String producer;
-    private BigDecimal price;
+    private Long price;
     private List<TagRespondDto> tags;
 
     public MedicamentRespondDto(MedicamentEntity medicamentEntity){

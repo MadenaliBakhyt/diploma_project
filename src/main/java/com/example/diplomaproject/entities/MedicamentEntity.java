@@ -30,7 +30,7 @@ public class MedicamentEntity {
     private String producer;
 
     @Column(name = "price")
-    private BigDecimal price;
+    private Long price;
 
     @ManyToMany
     @JoinTable(

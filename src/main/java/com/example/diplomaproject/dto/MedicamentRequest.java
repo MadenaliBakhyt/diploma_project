@@ -17,6 +17,6 @@ public class MedicamentRequest {
     private String description;
     private String country;
     private String producer;
-    private BigDecimal price;
+    private Long price;
     private List<Integer> tags;
 }
