@@ -6,6 +6,7 @@ import com.example.diplomaproject.dto.PrescriptionRequest;
 import com.example.diplomaproject.dto.TagRespondDto;
 import com.example.diplomaproject.entities.PrescriptionEntity;
 import com.example.diplomaproject.entities.TagEntity;
+import com.example.diplomaproject.entities.enums.PrescriptionStatus;
 import com.example.diplomaproject.repositories.PrescriptionRepository;
 import com.example.diplomaproject.repositories.TagRepository;
 import com.example.diplomaproject.repositories.UserRepository;
@@ -56,4 +57,6 @@ public class PrescriptionService {
         List<PrescriptionEntity> ls=prescriptionRepository.findPrescriptionEntitiesByPatientId(userRepository.findByUsername(SecurityUtils.getCurrentName()));
         return ls.stream().map(PrescriptionDto::new).toList();
     }
+
+
 }

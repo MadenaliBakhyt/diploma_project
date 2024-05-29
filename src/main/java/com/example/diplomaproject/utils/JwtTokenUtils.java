@@ -1,5 +1,6 @@
 package com.example.diplomaproject.utils;
 
+import com.example.diplomaproject.entities.OrderEntity;
 import com.example.diplomaproject.entities.UserEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -20,6 +21,21 @@ public class JwtTokenUtils {
 
     @Value("${jwt.lifetime}")
     private Duration jwtLifetime;
+
+    public String generateOrderToken(OrderEntity order) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("orderId", order.getId());
+
+        Date issuedDate = order.getPrescription().getCreatedDate();
+        Date expiredDate = order.getPrescription().getExpiredDate();
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(order.getId().toString())
+                .setIssuedAt(issuedDate)
+                .setExpiration(expiredDate)
+                .signWith(SignatureAlgorithm.HS256, secret)
+                .compact();
+    }
 
     public String generateToken(UserEntity user) {
         Map<String, Object> claims = new HashMap<>();
@@ -44,6 +60,10 @@ public class JwtTokenUtils {
 
     public List<String> getRoles(String token) {
         return getAllClaimsFromToken(token).get("roles", List.class);
+    }
+
+    public Integer getOrderId(String token) {
+        return getAllClaimsFromToken(token).get("orderId", Integer.class);
     }
 
     public Claims getAllClaimsFromToken(String token) {

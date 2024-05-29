@@ -31,7 +31,7 @@ public class OrderEntity {
     @Column(name = "total")
     private Long total;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "prescription_id", nullable = false)
     private PrescriptionEntity prescription;
 }
