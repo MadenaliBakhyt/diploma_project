@@ -1,6 +1,7 @@
 package com.example.diplomaproject.services;
 
 import com.example.diplomaproject.dto.RegistrationUserDto;
+import com.example.diplomaproject.dto.UserDto;
 import com.example.diplomaproject.entities.UserEntity;
 import com.example.diplomaproject.entities.enums.Roles;
 import com.example.diplomaproject.repositories.UserRepository;
@@ -44,6 +45,11 @@ public class UserService implements UserDetailsService {
     public Optional<UserEntity> findByUsername(String username){
         return userRepository.findByUsername(username);
 
+    }
+
+    public List<UserDto> findUsersByRole(Roles roles){
+        List<UserEntity> ls=userRepository.findUserEntitiesByRolesContains(roleService.getRole(roles));
+        return ls.stream().map(UserDto::new).toList();
     }
 
     @Override

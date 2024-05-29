@@ -19,7 +19,6 @@ public class UserDto {
         this.username=userEntity.getUsername();
         this.iin=userEntity.getIin();
         this.phone_number=userEntity.getPhone_number();
-
     }
 
 
