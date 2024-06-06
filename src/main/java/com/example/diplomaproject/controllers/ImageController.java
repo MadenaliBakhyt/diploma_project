@@ -23,10 +23,17 @@ public class ImageController {
                 .body(imageService.uploadImage(file));
     }
 
-    @GetMapping("/downloadImage/{id}")
-    public ResponseEntity<?> downloadImage(@PathVariable Integer id){
+    @GetMapping("/downloadImageById/{id}")
+    public ResponseEntity<?> downloadImageById(@PathVariable Integer id){
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.valueOf("image/png"))
                 .body(imageService.downloadImageById(id));
+    }
+
+    @GetMapping("/downloadImageByName/{name}")
+    public ResponseEntity<?> downloadImage(@PathVariable String name){
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.valueOf("image/png"))
+                .body(imageService.downloadImageByName(name));
     }
 }

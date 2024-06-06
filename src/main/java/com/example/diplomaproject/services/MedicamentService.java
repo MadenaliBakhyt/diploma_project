@@ -27,6 +27,8 @@ public class MedicamentService {
         medicamentEntity.setCountry(medicamentRequest.getCountry());
         medicamentEntity.setProducer(medicamentRequest.getProducer());
         medicamentEntity.setPrice(medicamentRequest.getPrice());
+        medicamentEntity.setImageUrl(medicamentRequest.getImageUrl());
+        medicamentEntity.setCategory(medicamentRequest.getCategory());
         var tags=tagRepository.findByIdIn(medicamentRequest.getTags());
         medicamentEntity.setTags(tags);
         MedicamentEntity md=medicamentRepository.save(medicamentEntity);
@@ -35,6 +37,10 @@ public class MedicamentService {
 
     public List<MedicamentRespondDto> getAll(){
         return medicamentRepository.findAll().stream().map(MedicamentRespondDto::new).toList();
+    }
+
+    public List<MedicamentRespondDto> getByCategory(String category){
+        return medicamentRepository.findAllByCategoryContains(category).stream().map(MedicamentRespondDto::new).toList();
     }
 
     public List<TagRespondDto> getAllTagsById(Long id){

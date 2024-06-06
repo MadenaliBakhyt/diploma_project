@@ -11,4 +11,6 @@ import java.util.List;
 public interface MedicamentRepository extends JpaRepository<MedicamentEntity,Long> {
     List<MedicamentEntity> findByIdIn(List<Long> id);
 
+    List<MedicamentEntity> findAllByCategoryContains(String category);
+
 }

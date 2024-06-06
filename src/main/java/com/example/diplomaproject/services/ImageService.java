@@ -22,10 +22,13 @@ public class ImageService {
     @Transactional
     public ImageDto uploadImage(MultipartFile multipartFile) throws IOException {
         byte[] image=ImageUtils.compressImage(multipartFile.getBytes());
+        UUID uuid = UUID.randomUUID();
         ImageEntity imageEntity=imageRepository.save(ImageEntity.builder()
-                .name(multipartFile.getOriginalFilename())
+                .name(uuid.toString())
                 .type(multipartFile.getContentType())
-                .imageData(image).build());
+                .imageData(image)
+                .url("http://localhost:8080/image/downloadImageByName/"+uuid)
+                .build());
         return new ImageDto(imageEntity);
     }
 

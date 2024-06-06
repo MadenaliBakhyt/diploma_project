@@ -32,6 +32,13 @@ public class MedicamentEntity {
     @Column(name = "price")
     private Long price;
 
+    @Column(name = "imageUrl")
+    private String imageUrl;
+
+    @Column(name = "category")
+    @ElementCollection
+    private List<String> category;
+
     @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(
             name="med_tags",

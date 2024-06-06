@@ -41,6 +41,15 @@ public class MedicamentController {
         }
     }
 
+    @GetMapping("/getAllMedsByCategory/{category}")
+    public ResponseEntity<?> getAllMedsByCategory(@PathVariable String category){
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(medicamentService.getByCategory(category));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @GetMapping("/getById/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id){
         try {

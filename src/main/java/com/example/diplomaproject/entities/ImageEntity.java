@@ -16,6 +16,7 @@ public class ImageEntity {
     private Integer id;
     private String name;
     private String type;
+    private String url;
     @Lob
     @Column(name = "imagedata",length = 1000)
     private byte[] imageData;

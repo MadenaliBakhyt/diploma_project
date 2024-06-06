@@ -12,6 +12,8 @@ import java.util.Collection;
 public class RegistrationUserDto {
     private Long id;
     private String username;
+    private String userSecondName;
+    private String userThirdName;
     private String password;
     private String confirmPassword;
     private String iin;

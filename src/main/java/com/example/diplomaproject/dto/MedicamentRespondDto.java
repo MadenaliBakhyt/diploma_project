@@ -20,6 +20,8 @@ public class MedicamentRespondDto {
     private String country;
     private String producer;
     private Long price;
+    private String imageUrl;
+    private List<String> category;
     private List<TagRespondDto> tags;
 
     public MedicamentRespondDto(MedicamentEntity medicamentEntity){
@@ -29,6 +31,8 @@ public class MedicamentRespondDto {
         this.country=medicamentEntity.getCountry();
         this.producer=medicamentEntity.getProducer();
         this.price=medicamentEntity.getPrice();
+        this.imageUrl=medicamentEntity.getImageUrl();
+        this.category=medicamentEntity.getCategory();
         this.tags=medicamentEntity.getTags().stream().map(TagRespondDto::new).toList();
     }
 }

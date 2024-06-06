@@ -18,5 +18,7 @@ public class MedicamentRequest {
     private String country;
     private String producer;
     private Long price;
+    private String imageUrl;
+    private List<String> category;
     private List<Integer> tags;
 }

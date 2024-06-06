@@ -12,9 +12,11 @@ public class ImageDto {
     private Integer id;
     private String name;
     private String type;
+    private String url;
     public ImageDto(ImageEntity imageEntity){
         this.id=imageEntity.getId();
         this.name=imageEntity.getName();
         this.type= imageEntity.getType();
+        this.url=imageEntity.getUrl();
     }
 }
