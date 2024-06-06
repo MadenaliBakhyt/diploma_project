@@ -27,7 +27,7 @@ public class ImageService {
                 .name(uuid.toString())
                 .type(multipartFile.getContentType())
                 .imageData(image)
-                .url("http://localhost:8080/image/downloadImageByName/"+uuid)
+                .url("http://94.131.2.222:8080/image/downloadImageByName/"+uuid)
                 .build());
         return new ImageDto(imageEntity);
     }
