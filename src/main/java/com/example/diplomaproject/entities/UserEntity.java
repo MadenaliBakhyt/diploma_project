@@ -44,7 +44,7 @@ public class UserEntity {
     @Column(name = "imageUrl")
     private String imageUrl;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(
             name="users_roles",
             joinColumns = @JoinColumn(name = "user_id"),

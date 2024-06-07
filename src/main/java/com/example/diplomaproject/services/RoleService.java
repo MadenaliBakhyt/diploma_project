@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,6 +19,14 @@ public class RoleService  {
 
     public RoleEntity getRole(Roles role){
         return roleRepository.findByName(role).orElseThrow(()->new RuntimeException("Role not found"));
+    }
+
+    public List<RoleEntity> getAll(){
+        return roleRepository.findAll();
+    }
+
+    public RoleEntity getRoleById(Integer id){
+        return roleRepository.findById(id).orElseThrow(()->new RuntimeException("Role not found"));
     }
 
 }

@@ -6,7 +6,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+
+@CrossOrigin
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/prescription")
@@ -48,5 +51,15 @@ public class PrescriptionController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    @PutMapping("/activatePrescription/{presId}")
+    public ResponseEntity<?> activatePrescription(@PathVariable Integer presId){
+        return ResponseEntity.ok(prescriptionService.activatePrescription(presId));
+    }
+
+    @PutMapping("/blockPrescription/{presId}")
+    public ResponseEntity<?> blockPrescription(@PathVariable Integer presId){
+        return ResponseEntity.ok(prescriptionService.blockPrescription(presId));
     }
 }

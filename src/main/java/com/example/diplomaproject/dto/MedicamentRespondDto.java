@@ -1,5 +1,6 @@
 package com.example.diplomaproject.dto;
 
+import com.example.diplomaproject.entities.CategoryEntity;
 import com.example.diplomaproject.entities.MedicamentEntity;
 import com.example.diplomaproject.entities.TagEntity;
 import jakarta.persistence.Column;
@@ -21,7 +22,7 @@ public class MedicamentRespondDto {
     private String producer;
     private Long price;
     private String imageUrl;
-    private List<String> category;
+    private List<CategoryEntity> category;
     private List<TagRespondDto> tags;
 
     public MedicamentRespondDto(MedicamentEntity medicamentEntity){

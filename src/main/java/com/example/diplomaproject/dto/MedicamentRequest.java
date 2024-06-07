@@ -1,5 +1,6 @@
 package com.example.diplomaproject.dto;
 
+import com.example.diplomaproject.entities.CategoryEntity;
 import com.example.diplomaproject.entities.TagEntity;
 import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
@@ -19,6 +20,6 @@ public class MedicamentRequest {
     private String producer;
     private Long price;
     private String imageUrl;
-    private List<String> category;
+    private List<Integer> category;
     private List<Integer> tags;
 }

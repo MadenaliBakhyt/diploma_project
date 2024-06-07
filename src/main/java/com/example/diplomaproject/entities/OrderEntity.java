@@ -20,6 +20,8 @@ public class OrderEntity {
     @Column(name = "id")
     private Integer id;
 
+    private String token;
+
     @ManyToMany
     @JoinTable(
             name="order_meds",

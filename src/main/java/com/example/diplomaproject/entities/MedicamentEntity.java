@@ -35,9 +35,13 @@ public class MedicamentEntity {
     @Column(name = "imageUrl")
     private String imageUrl;
 
-    @Column(name = "category")
-    @ElementCollection
-    private List<String> category;
+    @ManyToMany(cascade = CascadeType.MERGE)
+    @Column(name = "categories")
+    @JoinTable(
+            name="med_categories",
+            joinColumns = @JoinColumn(name = "med_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private List<CategoryEntity> category;
 
     @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(

@@ -3,6 +3,8 @@ package com.example.diplomaproject.services;
 import com.example.diplomaproject.dto.ImageDto;
 import com.example.diplomaproject.dto.RegistrationUserDto;
 import com.example.diplomaproject.dto.UserDto;
+import com.example.diplomaproject.dto.UserRoleDto;
+import com.example.diplomaproject.entities.RoleEntity;
 import com.example.diplomaproject.entities.UserEntity;
 import com.example.diplomaproject.entities.enums.Roles;
 import com.example.diplomaproject.repositories.UserRepository;
@@ -21,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -91,6 +94,21 @@ public class UserService implements UserDetailsService {
         //Nado proverku sdelat typa susestvuetly takoy akkaunt yly net
         userEntity.setRoles(List.of(roleService.getRole(Roles.ROLE_USER)));
         final String uri = "https://ui-avatars.com/api/?name="+registrationUserDto.getUsername()+"+"+registrationUserDto.getUserSecondName();
+        userEntity.setImageUrl(uri);
+        return userRepository.save(userEntity);
+    }
+
+    public UserEntity createUserByRole(UserRoleDto userRoleDto){
+        UserEntity userEntity=new UserEntity();
+        userEntity.setUsername(userRoleDto.getUsername());
+        userEntity.setUserSecondname(userRoleDto.getUserSecondName());
+        userEntity.setUserThirdname(userRoleDto.getUserThirdName());
+        userEntity.setPassword(userRoleDto.getPassword());
+        userEntity.setIin(userRoleDto.getIin());
+        userEntity.setPhone_number(userRoleDto.getPhone_number());
+        RoleEntity roleEntity= roleService.getRoleById(userRoleDto.getRole_id());
+        userEntity.setRoles(List.of(roleEntity));
+        final String uri = "https://ui-avatars.com/api/?name="+userRoleDto.getUsername()+"+"+userRoleDto.getUserSecondName();
         userEntity.setImageUrl(uri);
         return userRepository.save(userEntity);
     }

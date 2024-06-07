@@ -18,12 +18,14 @@ public class OrderRespondDto {
     private List<MedicamentRespondDto> medicamentEntities;
     private Long total;
     private PrescriptionDto prescription;
+    private String token;
 
     public OrderRespondDto(OrderEntity orderEntity){
         this.id=orderEntity.getId();
         this.medicamentEntities=orderEntity.getMedicamentEntities()
                 .stream().map(MedicamentRespondDto::new).toList();
         this.total=orderEntity.getTotal();
+        this.token=orderEntity.getToken();
         this.prescription=new PrescriptionDto(orderEntity.getPrescription());
     }
 }

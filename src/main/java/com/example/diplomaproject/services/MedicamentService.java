@@ -5,6 +5,7 @@ import com.example.diplomaproject.dto.MedicamentRespondDto;
 import com.example.diplomaproject.dto.TagRespondDto;
 import com.example.diplomaproject.entities.MedicamentEntity;
 import com.example.diplomaproject.entities.TagEntity;
+import com.example.diplomaproject.repositories.CategoryRepository;
 import com.example.diplomaproject.repositories.MedicamentRepository;
 import com.example.diplomaproject.repositories.TagRepository;
 import jakarta.transaction.Transactional;
@@ -19,6 +20,7 @@ import java.util.List;
 public class MedicamentService {
     private final MedicamentRepository medicamentRepository;
     private final TagRepository tagRepository;
+    private final CategoryRepository categoryRepository;
 
     public MedicamentRespondDto create(MedicamentRequest medicamentRequest){
         MedicamentEntity medicamentEntity=new MedicamentEntity();
@@ -28,7 +30,8 @@ public class MedicamentService {
         medicamentEntity.setProducer(medicamentRequest.getProducer());
         medicamentEntity.setPrice(medicamentRequest.getPrice());
         medicamentEntity.setImageUrl(medicamentRequest.getImageUrl());
-        medicamentEntity.setCategory(medicamentRequest.getCategory());
+        var categories=categoryRepository.findByIdIn(medicamentRequest.getCategory());
+        medicamentEntity.setCategory(categories);
         var tags=tagRepository.findByIdIn(medicamentRequest.getTags());
         medicamentEntity.setTags(tags);
         MedicamentEntity md=medicamentRepository.save(medicamentEntity);
@@ -39,8 +42,8 @@ public class MedicamentService {
         return medicamentRepository.findAll().stream().map(MedicamentRespondDto::new).toList();
     }
 
-    public List<MedicamentRespondDto> getByCategory(String category){
-        return medicamentRepository.findAllByCategoryContains(category).stream().map(MedicamentRespondDto::new).toList();
+    public List<MedicamentRespondDto> getByCategory(String name){
+        return medicamentRepository.findAllByCategoryContains(categoryRepository.findByName(name)).stream().map(MedicamentRespondDto::new).toList();
     }
 
     public List<TagRespondDto> getAllTagsById(Long id){

@@ -28,20 +28,24 @@ public class OrderService {
     private final MedicamentRepository medicamentRepository;
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
-
     private final MedicamentService medicamentService;
-
     private final JwtTokenUtils jwtTokenUtils;
 
     public OrderRespondDto create(OrderRequestDto orderRequestDto) {
         OrderEntity orderEntity = new OrderEntity();
-        List<MedicamentEntity> ls = medicamentRepository.findByIdIn(orderRequestDto.getMedicaments());
+        List<MedicamentEntity> ls = medicamentRepository.findByIdIn(
+                orderRequestDto.getMedicaments());
         Long total = medicamentService.getTotalPrice(ls);
-        PrescriptionEntity prescriptionEntity = prescriptionRepository.findById(orderRequestDto.getPrescriptionId()).get();
+        PrescriptionEntity prescriptionEntity = prescriptionRepository.findById(
+                orderRequestDto.getPrescriptionId()).get();
         orderEntity.setMedicamentEntities(ls);
         orderEntity.setPrescription(prescriptionEntity);
         orderEntity.setTotal(total);
+
         OrderEntity order = orderRepository.save(orderEntity);
+
+        order.setToken(createOrderToken(order.getId()).getToken());
+        order = orderRepository.save(order);
         return new OrderRespondDto(order);
     }
 
@@ -60,7 +64,6 @@ public class OrderService {
         List<OrderEntity> ls = orderRepository.findOrderEntitiesByPrescription_PatientId(patient);
         return ls.stream().map(OrderRespondDto::new).toList();
     }
-
     public List<OrderRespondDto> getOrdersByDoctorId() {
         UserEntity doctor = userRepository.findByUsername(SecurityUtils.getCurrentName()).get();
         List<OrderEntity> ls = orderRepository.findOrderEntitiesByPrescription_DoctorId(doctor);
@@ -78,7 +81,9 @@ public class OrderService {
 
         OrderEntity order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new BadCredentialsException("Order not found"));
-
+        if (!order.getPrescription().getStatus().equals(PrescriptionStatus.ACTIVE)) {
+            throw new BadCredentialsException("Prescription is not active");
+        }
         return new OrderRespondDto(order);
     }
 
@@ -94,5 +99,4 @@ public class OrderService {
         }
         return true;
     }
-
 }

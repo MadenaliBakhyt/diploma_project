@@ -7,7 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+@CrossOrigin
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/medicament")
@@ -41,10 +43,10 @@ public class MedicamentController {
         }
     }
 
-    @GetMapping("/getAllMedsByCategory/{category}")
-    public ResponseEntity<?> getAllMedsByCategory(@PathVariable String category){
+    @GetMapping("/getAllMedsByCategory/{name}")
+    public ResponseEntity<?> getAllMedsByCategory(@PathVariable String name){
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(medicamentService.getByCategory(category));
+            return ResponseEntity.status(HttpStatus.OK).body(medicamentService.getByCategory(name));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

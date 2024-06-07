@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -32,14 +33,34 @@ public class PrescriptionService {
         var doctor = userRepository.findByUsername(SecurityUtils.getCurrentName())
                 .orElseThrow(() -> new BadCredentialsException("Doctor not found"));
         var tags = tagRepository.findByIdIn(request.getTags());
-
         var prescription = new PrescriptionEntity();
-
         prescription.setPatientId(patient);
         prescription.setDoctorId(doctor);
         prescription.setTags(tags);
         PrescriptionEntity prescriptionEntity=prescriptionRepository.save(prescription);
+        return new PrescriptionDto(prescriptionEntity);
+    }
 
+    public PrescriptionDto activatePrescription(Integer id){
+        PrescriptionEntity prescriptionEntity=prescriptionRepository.findById(id).get();
+        if(!prescriptionEntity.getStatus().equals(PrescriptionStatus.INACTIVE)){
+            throw new BadCredentialsException("Prescription can't be activated");
+        }
+        Date today=new Date();
+        if(today.after(prescriptionEntity.getExpiredDate())){
+            prescriptionEntity.setStatus(PrescriptionStatus.EXPIRED);
+            prescriptionRepository.save(prescriptionEntity);
+            throw new BadCredentialsException("Prescription is expired");
+        }
+        prescriptionEntity.setStatus(PrescriptionStatus.ACTIVE);
+        prescriptionRepository.save(prescriptionEntity);
+        return new PrescriptionDto(prescriptionEntity);
+    }
+
+    public PrescriptionDto blockPrescription(Integer id){
+        PrescriptionEntity prescriptionEntity=prescriptionRepository.findById(id).get();
+        prescriptionEntity.setStatus(PrescriptionStatus.BLOCKED);
+        prescriptionRepository.save(prescriptionEntity);
         return new PrescriptionDto(prescriptionEntity);
     }
 

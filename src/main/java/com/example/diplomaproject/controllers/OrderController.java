@@ -7,7 +7,9 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+@CrossOrigin
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/order")
@@ -36,11 +38,6 @@ public class OrderController {
     @GetMapping("/getOrdersByDoctorId")
     public ResponseEntity<?> getOrdersByDoctorId(){
         return ResponseEntity.ok(orderService.getOrdersByDoctorId());
-    }
-
-    @GetMapping("/getQrToken/{orderId}")
-    public ResponseEntity<?> createOrderToken(@PathVariable Integer orderId){
-        return ResponseEntity.ok(orderService.createOrderToken(orderId));
     }
 
     @GetMapping("/scanQrCode")
