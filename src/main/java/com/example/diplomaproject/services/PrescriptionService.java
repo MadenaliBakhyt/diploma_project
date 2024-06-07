@@ -79,5 +79,10 @@ public class PrescriptionService {
         return ls.stream().map(PrescriptionDto::new).toList();
     }
 
+    public List<PrescriptionDto> getAllPres(){
+        List<PrescriptionEntity> ls=prescriptionRepository.findAll();
+        return ls.stream().map(PrescriptionDto::new).toList();
+    }
+
 
 }

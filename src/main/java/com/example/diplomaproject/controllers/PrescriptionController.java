@@ -44,6 +44,15 @@ public class PrescriptionController {
         }
     }
 
+    @GetMapping("/getAllPres")
+    public ResponseEntity<?> getAllPres(){
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(prescriptionService.getAllPres());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @GetMapping("/findAllPresByPatient")
     public ResponseEntity<?> findAllPresByPatient(){
         try {
