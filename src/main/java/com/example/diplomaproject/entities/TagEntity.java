@@ -21,12 +21,7 @@ public class TagEntity {
     private String tagName;
 
 
-    @ManyToMany(cascade = CascadeType.MERGE)
-    @JoinTable(
-            name="med_tags",
-            joinColumns = @JoinColumn(name = "tag_id"),
-            inverseJoinColumns = @JoinColumn(name = "med_id")
-    )
+    @ManyToMany(mappedBy = "tags")
     private List<MedicamentEntity> medicamentEntityList;
 
 }

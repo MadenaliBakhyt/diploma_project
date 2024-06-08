@@ -35,17 +35,15 @@ public class MedicamentEntity {
     @Column(name = "imageUrl")
     private String imageUrl;
 
-    @ManyToMany(cascade = CascadeType.MERGE)
-    @Column(name = "categories")
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
-            name="med_categories",
             joinColumns = @JoinColumn(name = "med_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private List<CategoryEntity> category;
 
-    @ManyToMany(cascade = CascadeType.MERGE)
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
-            name="med_tags",
+            name = "med_tags",
             joinColumns = @JoinColumn(name = "med_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )

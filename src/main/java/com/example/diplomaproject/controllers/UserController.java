@@ -39,4 +39,9 @@ public class UserController {
     public ResponseEntity<?> createUserByRole(@RequestBody UserRoleDto userRoleDto){
         return ResponseEntity.ok(userService.createUserByRole(userRoleDto));
     }
+    @DeleteMapping("/deleteById/{id}")
+    public ResponseEntity<?> deleteById(@PathVariable Long id){
+        userService.deleteById(id);
+        return ResponseEntity.ok().body("Success");
+    }
 }

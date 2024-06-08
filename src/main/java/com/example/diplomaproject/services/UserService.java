@@ -31,14 +31,14 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserService implements UserDetailsService {
-    private  UserRepository userRepository;
-    private  RoleService roleService;
-    private  PasswordEncoder passwordEncoder;
+    private UserRepository userRepository;
+    private RoleService roleService;
+    private PasswordEncoder passwordEncoder;
     private ImageService imageService;
 
     @Autowired
-    public void setImageService(ImageService imageService){
-        this.imageService=imageService;
+    public void setImageService(ImageService imageService) {
+        this.imageService = imageService;
     }
 
     @Autowired
@@ -56,24 +56,24 @@ public class UserService implements UserDetailsService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public Optional<UserEntity> findByUsername(String username){
+    public Optional<UserEntity> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
-    public Optional<UserEntity> findByIin(String iin){
+    public Optional<UserEntity> findByIin(String iin) {
         return userRepository.findByIin(iin);
     }
 
-    public List<UserDto> findUsersByRole(Roles roles){
-        List<UserEntity> ls=userRepository.findUserEntitiesByRolesContains(roleService.getRole(roles));
+    public List<UserDto> findUsersByRole(Roles roles) {
+        List<UserEntity> ls = userRepository.findUserEntitiesByRolesContains(roleService.getRole(roles));
         return ls.stream().map(UserDto::new).toList();
     }
 
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserEntity userEntity=findByIin(username).orElseThrow(()-> new UsernameNotFoundException(
-                String.format("User '%s' not found",username)
+        UserEntity userEntity = findByIin(username).orElseThrow(() -> new UsernameNotFoundException(
+                String.format("User '%s' not found", username)
         ));
 
         return new User(
@@ -83,33 +83,37 @@ public class UserService implements UserDetailsService {
         );
     }
 
-    public UserEntity createNewUser(RegistrationUserDto registrationUserDto)  {
-        UserEntity userEntity=new UserEntity();
+    public UserEntity createNewUser(RegistrationUserDto registrationUserDto) {
+        UserEntity userEntity = new UserEntity();
         userEntity.setUsername(registrationUserDto.getUsername());
         userEntity.setUserSecondname(registrationUserDto.getUserSecondName());
         userEntity.setUserThirdname(registrationUserDto.getUserThirdName());
         userEntity.setIin(registrationUserDto.getIin());
         userEntity.setPhone_number(registrationUserDto.getPhone_number());
         userEntity.setPassword(passwordEncoder.encode(registrationUserDto.getPassword()));
-        //Nado proverku sdelat typa susestvuetly takoy akkaunt yly net
+        //todo Nado proverku sdelat typa susestvuetly takoy akkaunt yly net
         userEntity.setRoles(List.of(roleService.getRole(Roles.ROLE_USER)));
-        final String uri = "https://ui-avatars.com/api/?name="+registrationUserDto.getUsername()+"+"+registrationUserDto.getUserSecondName();
+        final String uri = "https://ui-avatars.com/api/?name=" + registrationUserDto.getUsername() + "+" + registrationUserDto.getUserSecondName();
         userEntity.setImageUrl(uri);
         return userRepository.save(userEntity);
     }
 
-    public UserEntity createUserByRole(UserRoleDto userRoleDto){
-        UserEntity userEntity=new UserEntity();
+    public UserEntity createUserByRole(UserRoleDto userRoleDto) {
+        UserEntity userEntity = new UserEntity();
         userEntity.setUsername(userRoleDto.getUsername());
         userEntity.setUserSecondname(userRoleDto.getUserSecondName());
         userEntity.setUserThirdname(userRoleDto.getUserThirdName());
         userEntity.setPassword(userRoleDto.getPassword());
         userEntity.setIin(userRoleDto.getIin());
         userEntity.setPhone_number(userRoleDto.getPhone_number());
-        RoleEntity roleEntity= roleService.getRoleById(userRoleDto.getRole_id());
+        RoleEntity roleEntity = roleService.getRoleById(userRoleDto.getRole_id());
         userEntity.setRoles(List.of(roleEntity));
-        final String uri = "https://ui-avatars.com/api/?name="+userRoleDto.getUsername()+"+"+userRoleDto.getUserSecondName();
+        final String uri = "https://ui-avatars.com/api/?name=" + userRoleDto.getUsername() + "+" + userRoleDto.getUserSecondName();
         userEntity.setImageUrl(uri);
         return userRepository.save(userEntity);
+    }
+
+    public void deleteById(Long id) {
+        userRepository.deleteById(id);
     }
 }
