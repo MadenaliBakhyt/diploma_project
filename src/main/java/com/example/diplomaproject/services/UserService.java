@@ -103,7 +103,7 @@ public class UserService implements UserDetailsService {
         userEntity.setUsername(userRoleDto.getUsername());
         userEntity.setUserSecondname(userRoleDto.getUserSecondName());
         userEntity.setUserThirdname(userRoleDto.getUserThirdName());
-        userEntity.setPassword(userRoleDto.getPassword());
+        userEntity.setPassword(passwordEncoder.encode(userRoleDto.getPassword()));
         userEntity.setIin(userRoleDto.getIin());
         userEntity.setPhone_number(userRoleDto.getPhone_number());
         RoleEntity roleEntity = roleService.getRoleById(userRoleDto.getRole_id());
