@@ -34,13 +34,13 @@ public class PrescriptionEntity {
     private Date createdDate;
     @Column(name = "expired_date")
     private Date expiredDate;
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
             name="prescription_tags",
             joinColumns = @JoinColumn(name = "prescription_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
-    private List<TagEntity> tags = new ArrayList<>();
+    private List<TagEntity> tags;
     @PrePersist
     public void onCreate() {
         createdDate = new Date();

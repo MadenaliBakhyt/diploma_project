@@ -84,5 +84,10 @@ public class PrescriptionService {
         return ls.stream().map(PrescriptionDto::new).toList();
     }
 
+//    public List<PrescriptionDto> getPresByTag(Integer id){
+//        List<PrescriptionEntity> ls=prescriptionRepository.findPrescriptionEntitiesByTagsContaining(tagRepository.findById(id));
+//        return ls.stream().map(PrescriptionDto::new).toList();
+//    }
+
 
 }

@@ -71,4 +71,9 @@ public class PrescriptionController {
     public ResponseEntity<?> blockPrescription(@PathVariable Integer presId){
         return ResponseEntity.ok(prescriptionService.blockPrescription(presId));
     }
+
+//    @GetMapping("/getByTag/{id}")
+//    public ResponseEntity<?> getPresByTag(@PathVariable Integer id){
+//        return ResponseEntity.ok(prescriptionService.getPresByTag(id));
+//    }
 }

@@ -1,8 +1,10 @@
 package com.example.diplomaproject.services;
 
 import com.example.diplomaproject.dto.TagRespondDto;
+import com.example.diplomaproject.entities.PrescriptionEntity;
 import com.example.diplomaproject.entities.TagEntity;
 import com.example.diplomaproject.repositories.MedicamentRepository;
+import com.example.diplomaproject.repositories.PrescriptionRepository;
 import com.example.diplomaproject.repositories.TagRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -11,11 +13,13 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
 @Service
 public class TagService {
+    private final PrescriptionRepository prescriptionRepository;
     private final TagRepository tagRepository;
     private final MedicamentRepository medicamentRepository;
 
@@ -51,6 +55,11 @@ public class TagService {
         tag.getMedicamentEntityList().forEach(medicament -> {
             medicament.getTags().remove(tag);
             medicamentRepository.save(medicament);
+        });
+        List<PrescriptionEntity> prescriptionEntities =prescriptionRepository.findPrescriptionEntitiesByTagsContaining(Optional.of(tag));
+        prescriptionEntities.forEach(prescriptionEntity -> {
+            prescriptionEntity.getTags().remove(tag);
+            prescriptionRepository.save(prescriptionEntity);
         });
         tagRepository.deleteById(id);
     }

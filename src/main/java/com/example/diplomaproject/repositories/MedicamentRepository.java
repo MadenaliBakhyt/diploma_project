@@ -17,4 +17,5 @@ public interface MedicamentRepository extends JpaRepository<MedicamentEntity,Lon
     List<MedicamentEntity> findAllByCategoryContains(Optional<CategoryEntity> categoryEntity);
 
 
+
 }

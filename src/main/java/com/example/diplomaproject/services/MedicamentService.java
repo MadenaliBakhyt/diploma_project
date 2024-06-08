@@ -4,12 +4,15 @@ import com.example.diplomaproject.dto.MedicamentRequest;
 import com.example.diplomaproject.dto.MedicamentRespondDto;
 import com.example.diplomaproject.dto.TagRespondDto;
 import com.example.diplomaproject.entities.MedicamentEntity;
+import com.example.diplomaproject.entities.OrderEntity;
 import com.example.diplomaproject.entities.TagEntity;
 import com.example.diplomaproject.repositories.CategoryRepository;
 import com.example.diplomaproject.repositories.MedicamentRepository;
+import com.example.diplomaproject.repositories.OrderRepository;
 import com.example.diplomaproject.repositories.TagRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -21,6 +24,8 @@ public class MedicamentService {
     private final MedicamentRepository medicamentRepository;
     private final TagRepository tagRepository;
     private final CategoryRepository categoryRepository;
+
+    private final OrderRepository orderRepository;
 
     public MedicamentRespondDto create(MedicamentRequest medicamentRequest){
         MedicamentEntity medicamentEntity=new MedicamentEntity();
@@ -69,6 +74,12 @@ public class MedicamentService {
 
     @Transactional
     public void deleteById(Long id){
+        MedicamentEntity medicament=medicamentRepository.findById(id).orElseThrow(() -> new BadCredentialsException("Not found"));
+        List<OrderEntity> orderEntities=orderRepository.findAllByMedicamentEntitiesContains(medicament);
+        orderEntities.forEach(orderEntity -> {
+            orderEntity.getMedicamentEntities().remove(medicament);
+            orderRepository.save(orderEntity);
+        });
         medicamentRepository.deleteById(id);
     }
 }

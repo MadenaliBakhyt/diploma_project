@@ -4,9 +4,12 @@ import com.example.diplomaproject.dto.ImageDto;
 import com.example.diplomaproject.dto.RegistrationUserDto;
 import com.example.diplomaproject.dto.UserDto;
 import com.example.diplomaproject.dto.UserRoleDto;
+import com.example.diplomaproject.entities.PrescriptionEntity;
 import com.example.diplomaproject.entities.RoleEntity;
 import com.example.diplomaproject.entities.UserEntity;
 import com.example.diplomaproject.entities.enums.Roles;
+import com.example.diplomaproject.repositories.PrescriptionRepository;
+import com.example.diplomaproject.repositories.RoleRepository;
 import com.example.diplomaproject.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +38,13 @@ public class UserService implements UserDetailsService {
     private RoleService roleService;
     private PasswordEncoder passwordEncoder;
     private ImageService imageService;
+    private final RoleRepository roleRepository;
+
+    private PrescriptionRepository prescriptionRepository;
+
+    public UserService(RoleRepository roleRepository) {
+        this.roleRepository = roleRepository;
+    }
 
     @Autowired
     public void setImageService(ImageService imageService) {
@@ -54,6 +64,11 @@ public class UserService implements UserDetailsService {
     @Autowired
     public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
+    }
+
+    @Autowired
+    public void setPrescriptionRepository(PrescriptionRepository prescriptionRepository){
+        this.prescriptionRepository=prescriptionRepository;
     }
 
     public Optional<UserEntity> findByUsername(String username) {
@@ -114,6 +129,23 @@ public class UserService implements UserDetailsService {
     }
 
     public void deleteById(Long id) {
+        UserEntity userEntity=userRepository.findById(id).get();
+        RoleEntity patient=roleRepository.findById(1).get();
+        RoleEntity doctor=roleRepository.findById(3).get();
+        UserEntity deletedUser=userRepository.findById(10L).get();
+        if(userEntity.getRoles().contains(patient)){
+            List<PrescriptionEntity> prescriptionEntities=prescriptionRepository.findPrescriptionEntitiesByPatientId(Optional.of(userEntity));
+            prescriptionEntities.forEach(prescriptionEntity -> {
+                prescriptionEntity.setPatientId(deletedUser);
+                prescriptionRepository.save(prescriptionEntity);
+            });
+        }else if(userEntity.getRoles().contains(doctor)){
+            List<PrescriptionEntity> prescriptionEntities=prescriptionRepository.findPrescriptionEntitiesByDoctorId(Optional.of(userEntity));
+            prescriptionEntities.forEach(prescriptionEntity -> {
+                prescriptionEntity.setDoctorId(deletedUser);
+                prescriptionRepository.save(prescriptionEntity);
+            });
+        }
         userRepository.deleteById(id);
     }
 }
