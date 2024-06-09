@@ -12,6 +12,7 @@ import com.example.diplomaproject.repositories.OrderRepository;
 import com.example.diplomaproject.repositories.TagRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
@@ -72,6 +73,13 @@ public class MedicamentService {
         return ans;
     }
 
+    @Query(value = "DELETE FROM medicaments_category WHERE med_id = ?id",
+            nativeQuery = true)
+    public void deletingInMedCat(Long id){
+    }
+
+
+
     @Transactional
     public void deleteById(Long id){
         MedicamentEntity medicament=medicamentRepository.findById(id).orElseThrow(() -> new BadCredentialsException("Not found"));
@@ -80,6 +88,11 @@ public class MedicamentService {
             orderEntity.getMedicamentEntities().remove(medicament);
             orderRepository.save(orderEntity);
         });
+        try{
+            deletingInMedCat(id);
+        }catch (Exception e){
+            throw new BadCredentialsException("Can not delete medicament");
+        }
         medicamentRepository.deleteById(id);
     }
 }
