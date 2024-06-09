@@ -40,7 +40,7 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getOrdersByDoctorId());
     }
 
-    @GetMapping("/scanQrCode/token")
+    @GetMapping("/scanQrCode/{token}")
     public ResponseEntity<?> scanQrCode(@PathVariable String token){
         return ResponseEntity.ok(orderService.scanQrCode(token));
     }
