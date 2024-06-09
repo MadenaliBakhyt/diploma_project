@@ -12,7 +12,9 @@ import com.example.diplomaproject.repositories.OrderRepository;
 import com.example.diplomaproject.repositories.TagRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
@@ -73,9 +75,10 @@ public class MedicamentService {
         return ans;
     }
 
-    @Query(value = "DELETE FROM medicament_entity_category WHERE medicament_entity_id = ?id;",
+    @Modifying
+    @Query(value = "DELETE FROM medicament_entity_category WHERE medicament_entity_id = :id;",
             nativeQuery = true)
-    public void deletingInMedCat(Long id){
+    public void deletingInMedCat(@Param("id") Long id){
     }
 
 
