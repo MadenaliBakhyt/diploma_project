@@ -73,7 +73,7 @@ public class MedicamentService {
         return ans;
     }
 
-    @Query(value = "DELETE FROM medicament_entity_category WHERE med_id = ?id",
+    @Query(value = "DELETE FROM medicament_entity_category WHERE med_id = ?id;",
             nativeQuery = true)
     public void deletingInMedCat(Long id){
     }
@@ -88,10 +88,6 @@ public class MedicamentService {
             orderEntity.getMedicamentEntities().remove(medicament);
             orderRepository.save(orderEntity);
         });
-        medicament.getCategory().forEach(cat->{
-            medicament.getCategory().remove(cat);
-        });
-        medicamentRepository.save(medicament);
         try{
             deletingInMedCat(id);
         }catch (Exception e){
