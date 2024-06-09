@@ -40,9 +40,9 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getOrdersByDoctorId());
     }
 
-    @GetMapping("/scanQrCode")
-    public ResponseEntity<?> scanQrCode(@RequestBody QrDto qrDto){
-        return ResponseEntity.ok(orderService.scanQrCode(qrDto));
+    @GetMapping("/scanQrCode/token")
+    public ResponseEntity<?> scanQrCode(@PathVariable String token){
+        return ResponseEntity.ok(orderService.scanQrCode(token));
     }
 
     @PutMapping("/handleOrder/{orderId}")

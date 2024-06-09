@@ -76,8 +76,8 @@ public class OrderService {
         return new QrDto(jwtTokenUtils.generateOrderToken(order));
     }
 
-    public OrderRespondDto scanQrCode(QrDto qrDto) {
-        Integer orderId = jwtTokenUtils.getOrderId(qrDto.getToken());
+    public OrderRespondDto scanQrCode(String token) {
+        Integer orderId = jwtTokenUtils.getOrderId(token);
 
         OrderEntity order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new BadCredentialsException("Order not found"));
