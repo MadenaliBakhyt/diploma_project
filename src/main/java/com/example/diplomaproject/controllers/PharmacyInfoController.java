@@ -39,7 +39,7 @@ public class PharmacyInfoController {
         return ResponseEntity.ok(pharmacyInfoService.removeMedicament(pharmacyInfoUpdateDto,id));
     }
 
-    @GetMapping("/getAllByMedId")
+    @PostMapping("/getAllByMedId")
     public ResponseEntity<?> getAllByMedId(@RequestBody PharmacyInfoUpdateDto pharmacyInfoUpdateDto){
         return ResponseEntity.ok(pharmacyInfoService.getAllByMedId(pharmacyInfoUpdateDto));
     }
