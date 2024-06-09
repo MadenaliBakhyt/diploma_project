@@ -73,7 +73,7 @@ public class MedicamentService {
         return ans;
     }
 
-    @Query(value = "DELETE FROM medicament_entity_category WHERE mmedicament_entity_id = ?id;",
+    @Query(value = "DELETE FROM medicament_entity_category WHERE medicament_entity_id = ?id;",
             nativeQuery = true)
     public void deletingInMedCat(Long id){
     }
