@@ -75,11 +75,11 @@ public class MedicamentService {
         return ans;
     }
 
-    @Modifying
-    @Query(value = "DELETE FROM medicament_entity_category WHERE medicament_entity_id = :id;",
-            nativeQuery = true)
-    public void deletingInMedCat(@Param("id") Long id){
-    }
+//    @Modifying
+//    @Query(value = "DELETE FROM medicament_entity_category WHERE medicament_entity_id = :id;",
+//            nativeQuery = true)
+//    public void deletingInMedCat(@Param("id") Long id){
+//    }
 
 
 
@@ -91,11 +91,11 @@ public class MedicamentService {
             orderEntity.getMedicamentEntities().remove(medicament);
             orderRepository.save(orderEntity);
         });
-        try{
-            deletingInMedCat(id);
-        }catch (Exception e){
-            throw new BadCredentialsException("Can not delete medicament");
-        }
+//        try{
+//            deletingInMedCat(id);
+//        }catch (Exception e){
+//            throw new BadCredentialsException("Can not delete medicament");
+//        }
         medicamentRepository.deleteById(id);
     }
 }
