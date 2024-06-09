@@ -88,6 +88,10 @@ public class MedicamentService {
             orderEntity.getMedicamentEntities().remove(medicament);
             orderRepository.save(orderEntity);
         });
+        medicament.getCategory().forEach(cat->{
+            medicament.getCategory().remove(cat);
+        });
+        medicamentRepository.save(medicament);
         try{
             deletingInMedCat(id);
         }catch (Exception e){
