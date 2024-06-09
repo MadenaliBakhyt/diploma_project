@@ -142,7 +142,7 @@ public class UserService implements UserDetailsService {
         RoleEntity patient=roleRepository.findById(1).get();
         RoleEntity doctor=roleRepository.findById(3).get();
         RoleEntity pharmacy=roleRepository.findById(4).get();
-        UserEntity deletedUser=userRepository.findById(10L).get();
+        UserEntity deletedUser=userRepository.findById(27L).get();
         if(userEntity.getRoles().contains(patient)){
             List<PrescriptionEntity> prescriptionEntities=prescriptionRepository.findPrescriptionEntitiesByPatientId(Optional.of(userEntity));
             prescriptionEntities.forEach(prescriptionEntity -> {
