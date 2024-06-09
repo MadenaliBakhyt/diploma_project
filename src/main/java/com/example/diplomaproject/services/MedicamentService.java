@@ -5,11 +5,9 @@ import com.example.diplomaproject.dto.MedicamentRespondDto;
 import com.example.diplomaproject.dto.TagRespondDto;
 import com.example.diplomaproject.entities.MedicamentEntity;
 import com.example.diplomaproject.entities.OrderEntity;
+import com.example.diplomaproject.entities.PharmacyInfoEntity;
 import com.example.diplomaproject.entities.TagEntity;
-import com.example.diplomaproject.repositories.CategoryRepository;
-import com.example.diplomaproject.repositories.MedicamentRepository;
-import com.example.diplomaproject.repositories.OrderRepository;
-import com.example.diplomaproject.repositories.TagRepository;
+import com.example.diplomaproject.repositories.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -27,6 +25,7 @@ public class MedicamentService {
     private final MedicamentRepository medicamentRepository;
     private final TagRepository tagRepository;
     private final CategoryRepository categoryRepository;
+    private final PharmacyInfoRepository pharmacyInfoRepository;
 
     private final OrderRepository orderRepository;
 
@@ -91,6 +90,13 @@ public class MedicamentService {
             orderEntity.getMedicamentEntities().remove(medicament);
             orderRepository.save(orderEntity);
         });
+        List<PharmacyInfoEntity> pharmacyInfoEntities= pharmacyInfoRepository
+                .findAllByMedicamentEntitiesIn((List<MedicamentEntity>) medicament);
+        pharmacyInfoEntities.forEach(phar->{
+            phar.getMedicamentEntities().remove(medicament);
+            pharmacyInfoRepository.save(phar);
+        });
+
 //        try{
 //            deletingInMedCat(id);
 //        }catch (Exception e){
