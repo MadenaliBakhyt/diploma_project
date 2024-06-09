@@ -91,7 +91,7 @@ public class MedicamentService {
             orderRepository.save(orderEntity);
         });
         List<PharmacyInfoEntity> pharmacyInfoEntities= pharmacyInfoRepository
-                .findAllByMedicamentEntitiesIn((List<MedicamentEntity>) medicament);
+                .findAllByMedicamentEntitiesIn(List.of( medicament));
         pharmacyInfoEntities.forEach(phar->{
             phar.getMedicamentEntities().remove(medicament);
             pharmacyInfoRepository.save(phar);
