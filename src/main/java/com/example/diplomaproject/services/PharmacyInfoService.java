@@ -77,6 +77,10 @@ public class PharmacyInfoService {
 //
 //        });
         List<PharmacyInfoEntity> ls=pharmacyInfoRepository.findAllByMedicamentEntitiesIn(meds);
+        ls.forEach(pharm ->{
+            List<MedicamentEntity> res=pharm.getMedicamentEntities().stream().filter(meds::contains).toList();
+            pharm.setMedicamentEntities(res);
+        });
         return ls.stream().map(PharmacyInfoRespondDto::new).toList();
     }
 }
