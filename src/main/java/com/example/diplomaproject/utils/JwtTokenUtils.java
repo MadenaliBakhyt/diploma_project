@@ -63,7 +63,7 @@ public class JwtTokenUtils {
     }
 
     public Integer getOrderId(String token) {
-        return getAllClaimsFromToken(token).get("id", Integer.class);
+        return getAllClaimsFromToken(token).get("orderId", Integer.class);
     }
 
     public Claims getAllClaimsFromToken(String token) {
