@@ -22,6 +22,7 @@ public class PharmacyInfoRespondDto {
     private Integer id;
     private String name;
     private String address;
+    private String imageUrl;
     private Double latitude;
     private Double longitude;
     private String city;
@@ -33,6 +34,7 @@ public class PharmacyInfoRespondDto {
         this.id= pharmacyInfoEntity.getId();
         this.name= pharmacyInfoEntity.getName();
         this.address= pharmacyInfoEntity.getAddress();
+        this.imageUrl=pharmacyInfoEntity.getImageUrl();
         this.latitude= pharmacyInfoEntity.getLatitude();
         this.longitude= pharmacyInfoEntity.getLongitude();
         this.city= pharmacyInfoEntity.getCity();

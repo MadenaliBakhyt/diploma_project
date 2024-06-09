@@ -33,6 +33,7 @@ public class PharmacyInfoService {
         pharmacyInfo.setLatitude(pharmacyInfoRequestDto.getLatitude());
         pharmacyInfo.setLongitude(pharmacyInfoRequestDto.getLongitude());
         pharmacyInfo.setCity(pharmacyInfoRequestDto.getCity());
+        pharmacyInfo.setImageUrl(pharmacyInfoRequestDto.getImageUrl());
         UserEntity userEntity=userRepository.findById(pharmacyInfoRequestDto.getPharmacyId())
                 .orElseThrow(()->new BadCredentialsException("User not found"));
         List<MedicamentEntity> medicamentEntities=medicamentRepository.findByIdIn(pharmacyInfoRequestDto.getMedicamentEntities());

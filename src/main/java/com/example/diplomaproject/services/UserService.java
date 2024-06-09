@@ -4,13 +4,9 @@ import com.example.diplomaproject.dto.ImageDto;
 import com.example.diplomaproject.dto.RegistrationUserDto;
 import com.example.diplomaproject.dto.UserDto;
 import com.example.diplomaproject.dto.UserRoleDto;
-import com.example.diplomaproject.entities.PrescriptionEntity;
-import com.example.diplomaproject.entities.RoleEntity;
-import com.example.diplomaproject.entities.UserEntity;
+import com.example.diplomaproject.entities.*;
 import com.example.diplomaproject.entities.enums.Roles;
-import com.example.diplomaproject.repositories.PrescriptionRepository;
-import com.example.diplomaproject.repositories.RoleRepository;
-import com.example.diplomaproject.repositories.UserRepository;
+import com.example.diplomaproject.repositories.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +37,19 @@ public class UserService implements UserDetailsService {
     private final RoleRepository roleRepository;
 
     private PrescriptionRepository prescriptionRepository;
+
+    private PharmacyInfoRepository pharmacyInfoRepository;
+    private DoctorInfoRepository doctorInfoRepository;
+
+    @Autowired
+    public void setDoctorInfoRepository(DoctorInfoRepository doctorInfoRepository) {
+        this.doctorInfoRepository = doctorInfoRepository;
+    }
+
+    @Autowired
+    public void setPharmacyInfoRepository(PharmacyInfoRepository pharmacyInfoRepository) {
+        this.pharmacyInfoRepository = pharmacyInfoRepository;
+    }
 
     public UserService(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
@@ -132,6 +141,7 @@ public class UserService implements UserDetailsService {
         UserEntity userEntity=userRepository.findById(id).get();
         RoleEntity patient=roleRepository.findById(1).get();
         RoleEntity doctor=roleRepository.findById(3).get();
+        RoleEntity pharmacy=roleRepository.findById(4).get();
         UserEntity deletedUser=userRepository.findById(10L).get();
         if(userEntity.getRoles().contains(patient)){
             List<PrescriptionEntity> prescriptionEntities=prescriptionRepository.findPrescriptionEntitiesByPatientId(Optional.of(userEntity));
@@ -145,6 +155,12 @@ public class UserService implements UserDetailsService {
                 prescriptionEntity.setDoctorId(deletedUser);
                 prescriptionRepository.save(prescriptionEntity);
             });
+            DoctorInfoEntity doctorInfo=doctorInfoRepository.findDoctorInfoEntityByDoctorId(userEntity);
+            doctorInfoRepository.delete(doctorInfo);
+
+        }else if(userEntity.getRoles().contains(pharmacy)){
+            PharmacyInfoEntity pharmacyInfo=pharmacyInfoRepository.findByPharmacyId(userEntity);
+            pharmacyInfoRepository.delete(pharmacyInfo);
         }
         userRepository.deleteById(id);
     }
